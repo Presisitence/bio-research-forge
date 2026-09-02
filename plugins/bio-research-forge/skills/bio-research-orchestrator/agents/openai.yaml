@@ -1,0 +1,7 @@
+interface:
+  display_name: "Bio Research Orchestrator"
+  short_description: "Route complex life-science work through evidence gates."
+  brand_color: "#176B5B"
+  default_prompt: "Use $bio-research-orchestrator to turn my research question into a traceable workflow."
+policy:
+  allow_implicit_invocation: true

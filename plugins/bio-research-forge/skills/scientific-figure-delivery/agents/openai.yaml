@@ -1,0 +1,7 @@
+interface:
+  display_name: "Scientific Figure Delivery"
+  short_description: "Publication figures with inline chat previews and QA."
+  brand_color: "#176B5B"
+  default_prompt: "Use $scientific-figure-delivery to make this result publication-ready and preview it here."
+policy:
+  allow_implicit_invocation: true

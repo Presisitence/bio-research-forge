@@ -1,0 +1,7 @@
+interface:
+  display_name: "Quantitative Research"
+  short_description: "Statistics and ML built around estimands and diagnostics."
+  brand_color: "#176B5B"
+  default_prompt: "Use $quantitative-research to choose and audit a defensible analysis for this design."
+policy:
+  allow_implicit_invocation: true

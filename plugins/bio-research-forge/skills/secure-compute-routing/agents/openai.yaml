@@ -1,0 +1,7 @@
+interface:
+  display_name: "Secure Compute Routing"
+  short_description: "Keep private data local and gate remote compute."
+  brand_color: "#176B5B"
+  default_prompt: "Use $secure-compute-routing to choose a safe runtime and data-transfer plan for this analysis."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,13 @@
+interface:
+  display_name: "Public Bio Databases"
+  short_description: "Query allowlisted public biological APIs with provenance."
+  brand_color: "#176B5B"
+  default_prompt: "Use $public-bio-databases to verify this gene or protein claim from public sources."
+policy:
+  allow_implicit_invocation: true
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "public-bio-api"
+      description: "Allowlisted read-only biological API server"
+      transport: "stdio"

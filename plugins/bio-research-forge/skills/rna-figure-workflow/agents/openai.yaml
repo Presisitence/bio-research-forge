@@ -1,0 +1,12 @@
+interface:
+  display_name: "RNA Figure Workflow"
+  short_description: "RNA plots with PNG previews, PDF export, and traceability."
+  brand_color: "#176B5B"
+  default_prompt: "Use $rna-figure-workflow to create and review an RNA-seq figure, then show the PNG here."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "rna-figure"
+      description: "Local R-based RNA figure generation"
+policy:
+  allow_implicit_invocation: true

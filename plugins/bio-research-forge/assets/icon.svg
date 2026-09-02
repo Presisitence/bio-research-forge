@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Bio Research Forge</title>
+  <rect width="64" height="64" rx="14" fill="#176B5B"/>
+  <path d="M19 16h26v6H19zM22 24h20v8c0 10-5 17-10 20-5-3-10-10-10-20z" fill="#E9F5F1"/>
+  <path d="M27 30c5 0 9 3 10 8-5 0-9-3-10-8zm10-2c-4 1-7 4-8 8 4-1 7-4 8-8z" fill="#F2B84B"/>
+</svg>

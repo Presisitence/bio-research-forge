@@ -1,0 +1,7 @@
+interface:
+  display_name: "Omics Workflow"
+  short_description: "Design-aware sequencing and omics analysis with QC gates."
+  brand_color: "#176B5B"
+  default_prompt: "Use $omics-workflow to audit this omics design and produce a stage-gated analysis plan."
+policy:
+  allow_implicit_invocation: true

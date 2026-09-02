@@ -1,0 +1,20 @@
+{
+  "name": "bio-research-forge",
+  "interface": {
+    "displayName": "Bio Research Forge"
+  },
+  "plugins": [
+    {
+      "name": "bio-research-forge",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bio-research-forge"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Research"
+    }
+  ]
+}

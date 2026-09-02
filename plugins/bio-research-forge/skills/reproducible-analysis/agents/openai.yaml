@@ -1,0 +1,7 @@
+interface:
+  display_name: "Reproducible Analysis"
+  short_description: "Make life-science analyses rerunnable and traceable."
+  brand_color: "#176B5B"
+  default_prompt: "Use $reproducible-analysis to package this workflow for a clean rerun and review."
+policy:
+  allow_implicit_invocation: true

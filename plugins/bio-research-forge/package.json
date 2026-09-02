@@ -1,0 +1,15 @@
+{
+  "name": "bio-research-forge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "test": "node tests/protocol-smoke.mjs && node tests/rna-figure-protocol-smoke.mjs && node tests/local-tools-protocol-smoke.mjs && node tests/privacy-boundary.mjs && node tests/skill-structure.mjs",
+    "test:render": "node tests/rna-figure-render-smoke.mjs && node tests/pymol-render-smoke.mjs",
+    "test:live": "node tests/live-api-smoke.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

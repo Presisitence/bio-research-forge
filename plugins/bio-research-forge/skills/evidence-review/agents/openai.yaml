@@ -1,0 +1,7 @@
+interface:
+  display_name: "Evidence Review"
+  short_description: "Audit claims, citations, numbers, figures, and code."
+  brand_color: "#9A3B3B"
+  default_prompt: "Use $evidence-review to independently audit this manuscript or analysis package."
+policy:
+  allow_implicit_invocation: true

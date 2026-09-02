@@ -1,0 +1,7 @@
+interface:
+  display_name: "Experimental Design Gate"
+  short_description: "Test biological question, design, and data fit first."
+  brand_color: "#176B5B"
+  default_prompt: "Use $experimental-design-gate to decide whether this experiment is Go, revise-and-Go, or No-Go."
+policy:
+  allow_implicit_invocation: true

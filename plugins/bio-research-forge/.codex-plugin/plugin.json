@@ -1,0 +1,45 @@
+{
+  "name": "bio-research-forge",
+  "version": "0.1.0+codex.20260902132517",
+  "description": "Evidence-first life-science research with public bio APIs, local RNA figures, selective molecular tools, writing, and independent review.",
+  "author": {
+    "name": "Bio Research Forge contributors"
+  },
+  "license": "AGPL-3.0-or-later",
+  "keywords": [
+    "life-science",
+    "bioinformatics",
+    "scientific-writing",
+    "peer-review",
+    "reproducibility"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Bio Research Forge",
+    "shortDescription": "Life-science analysis, writing, figures, and review.",
+    "longDescription": "A public-data-only life-science research suite with evidence gates, secure local/HPC compute routing, omics and quantitative workflows, manuscript argument design, inline figure previews, reproducibility checks, and independent scientific review.",
+    "developerName": "Bio Research Forge contributors",
+    "category": "Research",
+    "capabilities": [
+      "Public bio-database search",
+      "Scientific analysis planning",
+      "Local RNA-seq figure generation",
+      "Safe PyMOL and desktop-tool routing",
+      "Secure compute routing",
+      "Manuscript writing",
+      "Figure QA",
+      "Independent review"
+    ],
+    "defaultPrompt": [
+      "Audit whether my data can answer this biological question.",
+      "Create an RNA-seq figure and preview the PNG directly here.",
+      "Render this structure with PyMOL or open this sequence file in SnapGene.",
+      "Review my manuscript, figures, citations, and numeric traceability.",
+      "Query public databases and separate evidence from hypotheses."
+    ],
+    "brandColor": "#176B5B",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/logo.svg"
+  },
+  "mcpServers": "./.mcp.json"
+}

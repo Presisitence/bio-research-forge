@@ -1,0 +1,12 @@
+interface:
+  display_name: "Local Bio Toolkit"
+  short_description: "Safe PyMOL rendering and selective desktop-tool opening."
+  brand_color: "#176B5B"
+  default_prompt: "Use $local-bio-toolkit to detect the appropriate installed tool and handle this file locally."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "local-bio-tools"
+      description: "Safe local PyMOL, SnapGene, Cytoscape, and Fiji bridge"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "public-bio-api": {
+      "command": "node",
+      "args": ["./mcp/public-bio-api.mjs"],
+      "cwd": ".",
+      "enabled": true,
+      "startup_timeout_sec": 15,
+      "tool_timeout_sec": 120,
+      "env_vars": ["NCBI_API_KEY"]
+    },
+    "rna-figure": {
+      "command": "node",
+      "args": ["./mcp/rna-figure.mjs"],
+      "cwd": ".",
+      "enabled": true,
+      "startup_timeout_sec": 20,
+      "tool_timeout_sec": 300,
+      "env_vars": ["RSCRIPT_EXE"]
+    },
+    "local-bio-tools": {
+      "command": "node",
+      "args": ["./mcp/local-bio-tools.mjs"],
+      "cwd": ".",
+      "enabled": true,
+      "startup_timeout_sec": 20,
+      "tool_timeout_sec": 300,
+      "env_vars": ["PYMOL_EXE", "SNAPGENE_EXE", "CYTOSCAPE_EXE", "FIJI_EXE"]
+    }
+  }
+}

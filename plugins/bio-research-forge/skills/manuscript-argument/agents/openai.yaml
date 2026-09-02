@@ -1,0 +1,7 @@
+interface:
+  display_name: "Manuscript Argument"
+  short_description: "Build rigorous Introduction and Discussion logic."
+  brand_color: "#176B5B"
+  default_prompt: "Use $manuscript-argument to rebuild this Introduction or Discussion from my evidence."
+policy:
+  allow_implicit_invocation: true
