@@ -82,7 +82,7 @@ node scripts/call-tool.mjs call public-bio-api bio_api_catalog "{}"
 1. 公共生物数据库查询；
 2. RNA-seq 火山图、PCA、热图、表达箱线图和富集气泡图；
 3. PyMOL 安全渲染；
-4. SnapGene、Cytoscape、Fiji 的受限本地打开；
+4. SnapGene、Cytoscape、Fiji 等需要本地安装支持；
 5. 实验设计、组学、统计、计算环境、论文写作、科研作图、可复现性和独立审查。
 
 详细的输入格式、证据边界和 Review 规则见[插件中文手册](plugins/bio-research-forge/README.zh-CN.md)，各客户端配置见[跨 Agent 接入指南](docs/AGENT-INTEGRATION.zh-CN.md)。
