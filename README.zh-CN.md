@@ -2,23 +2,23 @@
 
 [English](README.md) | 中文
 
-Bio Research Forge 现在按“**通用 Agent 核心 + 可选客户端适配器**”组织，不再把 Codex 当作唯一入口。
+Bio Research Forge 可按“**通用 Agent 核心 + 可选客户端适配器**”接入。
 
 通用核心遵循 [Agent Plugins 1.0](https://agent-plugins.org/) 和 Model Context Protocol（MCP）。只要 Agent 客户端支持本地 MCP stdio，就能直接加载三个 MCP 服务；支持 Agent Plugins 1.0 的客户端还能自动发现 12 个技能。没有原生 MCP 功能、但能够运行本地命令的 Agent，也可以通过仓库提供的命令行桥调用同一组工具。
 
-因此它可以服务于不同模型和客户端，而不是绑定某一个模型厂商。Codex、Claude、Cursor、VS Code/GitHub Copilot、OpenAI Agents SDK 都只是不同的接入方式。
+因此它可以服务于不同模型和客户端，比如：Codex、Claude、Cursor、VS Code/GitHub Copilot、OpenAI Agents SDK 都只是不同的接入方式。
 
 ## 仓库结构
 
 | 路径 | 定位 |
 |---|---|
-| `plugin.json` | 厂商无关的 Agent Plugins 1.0 主清单 |
+| `plugin.json` |Agent Plugins |
 | `skills/` | 12 个通用 Agent Skills |
 | `mcp.json` | 3 个通用 stdio MCP 服务定义 |
 | `scripts/print-mcp-config.mjs` | 为通用 MCP、Claude、Cursor、VS Code 生成本机配置 |
 | `scripts/call-tool.mjs` | 没有 MCP 客户端时，通过命令行列出和调用工具 |
 | `plugins/bio-research-forge/` | MCP 实现、R 绘图脚本、测试以及自包含的兼容包 |
-| `.agents/plugins/marketplace.json` | **可选的 Codex 安装适配器**，不是通用核心入口 |
+| `.agents/plugins/marketplace.json` | **可选的 例如Codex 安装适配器**，不是通用核心入口 |
 | `.github/workflows/verify.yml` | GitHub Actions 自动验证 |
 | `LICENSE` | GNU AGPL-3.0-or-later |
 
@@ -112,7 +112,4 @@ npm run test:live
 - `npm run test:live`：公共数据库接口连通性。
 
 ## 公开范围
-
-本仓库不包含个人实验数据、私有基因组或转录组数据库、辣椒专用数据门户、访问凭据、PPT、毕业论文或稿件原文。用户明确选择的文件只在本机处理，不会被写入插件源码或上传到公共 API。
-
 第三方项目和软件的来源说明见 [ATTRIBUTION.md](plugins/bio-research-forge/ATTRIBUTION.md)。
