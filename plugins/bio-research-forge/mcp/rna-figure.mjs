@@ -131,7 +131,7 @@ function run(exe, args, timeout = 180000) {
 
 async function status() {
   const exe = rscriptPath();
-  if (!exe) return { ready: false, rscript: null, reason: 'Rscript not found. Set RSCRIPT_EXE or add Rscript to PATH.' };
+  if (!exe) return { ready: false, rscript: null, script: existsSync(SCRIPT), packages: {}, reason: 'Rscript not found. Set RSCRIPT_EXE or add Rscript to PATH.' };
   const probe = await run(exe, ['--vanilla', '-e', "p<-c('jsonlite','ggplot2','pheatmap','ggrepel');cat(paste(p,vapply(p,requireNamespace,logical(1),quietly=TRUE),sep='='),sep='\\n')"], 30000);
   const packages = Object.fromEntries(probe.stdout.split(/\r?\n/).filter((line) => line.includes('=')).map((line) => { const [k, v] = line.trim().split('='); return [k, v === 'TRUE']; }));
   return { ready: Boolean(packages.jsonlite && packages.ggplot2 && packages.pheatmap), rscript: exe, script: existsSync(SCRIPT), packages };
