@@ -19,7 +19,6 @@ Bio Research Forge 可按“**通用 Agent 核心 + 可选客户端适配器**�
 | `scripts/call-tool.mjs` | 没有 MCP 客户端时，通过命令行列出和调用工具 |
 | `plugins/bio-research-forge/` | MCP 实现、R 绘图脚本、测试以及自包含的兼容包 |
 | `.agents/plugins/marketplace.json` | **可选的 例如Codex 安装适配器**，不是通用核心入口 |
-| `.github/workflows/verify.yml` | GitHub Actions 自动验证 |
 | `LICENSE` | GNU AGPL-3.0-or-later |
 
 `.agents/plugins/marketplace.json` 被保留，只是为了让 Codex 用户可以一键安装。其他 Agent 不读取它，也不依赖它；真正跨 Agent 的入口是根目录的 `plugin.json`、`skills/` 和 `mcp.json`。
