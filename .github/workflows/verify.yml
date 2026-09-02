@@ -19,6 +19,7 @@ jobs:
       - name: Protocol, privacy, and skill structure
         working-directory: plugins/bio-research-forge
         run: npm test
-      - name: Public API smoke tests
+      - name: Public API smoke tests (network-dependent)
+        continue-on-error: true
         working-directory: plugins/bio-research-forge
-        run: npm run test:live
+        run: npm run test:live || (sleep 10 && npm run test:live)
