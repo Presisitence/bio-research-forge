@@ -2,7 +2,9 @@
 
 [English](README.md) | 中文
 
-Bio Research Forge 是一个面向生命科学研究的 Codex 插件。它不是简单堆叠数据库链接，而是把研究设计、公共数据查询、组学分析、统计、科研出图、论文写作、可复现性和独立审查组织成一套有边界、可追踪的工作流。
+Bio Research Forge 是一个面向生命科学研究的通用 Agent Plugins 1.0 与 MCP 插件。它不是 Codex 专属，也不是简单堆叠数据库链接，而是把研究设计、公共数据查询、组学分析、统计、科研出图、论文写作、可复现性和独立审查组织成一套有边界、可追踪的工作流。
+
+仓库根目录提供厂商无关的 `plugin.json`、`skills/` 和 `mcp.json`。Codex、Claude、Cursor、VS Code/GitHub Copilot、OpenAI Agents SDK 或其他支持 MCP stdio 的 Agent，都可以接入相同的工具。完整配置见[跨 Agent 接入指南](../../docs/AGENT-INTEGRATION.zh-CN.md)。
 
 插件尤其重视四件事：
 
@@ -200,9 +202,17 @@ Sol Genomics Network 只保留通用、公开的茄科元数据入口，不提�
 - 可以通过 `RSCRIPT_EXE`、`PYMOL_EXE`、`SNAPGENE_EXE`、`CYTOSCAPE_EXE`、`FIJI_EXE` 指定可执行文件；
 - 未找到工具时只报告缺失，不会静默安装。
 
-## 九、本地安装与验证
+## 九、通用安装与验证
 
-在包含 `.agents/plugins/marketplace.json` 的仓库根目录执行：
+对 Claude、Cursor、VS Code 或其他 MCP 客户端，先在仓库根目录运行配置生成器：
+
+```powershell
+node scripts/print-mcp-config.mjs --client generic
+```
+
+将输出复制到对应客户端的 MCP 配置。只有 Codex 用户才需要下面的 Marketplace 命令。
+
+可选的 Codex 安装：
 
 ```powershell
 codex plugin marketplace add "<仓库根目录>"

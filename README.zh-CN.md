@@ -1,51 +1,118 @@
-# Bio Research Forge 插件仓库
+# Bio Research Forge：通用 Agent 生命科学插件
 
 [English](README.md) | 中文
 
-这是 Bio Research Forge 的 Codex 插件源码与本地 Marketplace。它面向生命科学研究，强调证据边界、可复现分析、科研出图、论文写作和独立 Review。
+Bio Research Forge 现在按“**通用 Agent 核心 + 可选客户端适配器**”组织，不再把 Codex 当作唯一入口。
 
-详细的功能、输入格式、隐私边界与使用示例见[插件中文说明](plugins/bio-research-forge/README.zh-CN.md)。
+通用核心遵循 [Agent Plugins 1.0](https://agent-plugins.org/) 和 Model Context Protocol（MCP）。只要 Agent 客户端支持本地 MCP stdio，就能直接加载三个 MCP 服务；支持 Agent Plugins 1.0 的客户端还能自动发现 12 个技能。没有原生 MCP 功能、但能够运行本地命令的 Agent，也可以通过仓库提供的命令行桥调用同一组工具。
 
-## 仓库内容
+因此它可以服务于不同模型和客户端，而不是绑定某一个模型厂商。Codex、Claude、Cursor、VS Code/GitHub Copilot、OpenAI Agents SDK 都只是不同的接入方式。
 
-- `plugins/bio-research-forge/`：插件本体；
-- `.agents/plugins/marketplace.json`：Codex Marketplace 入口；
-- `.github/workflows/verify.yml`：GitHub Actions 自动验证；
-- `LICENSE`：GNU AGPL-3.0-or-later。
+## 仓库结构
 
-插件目前包括 12 个分类技能和 3 个 MCP 服务：
+| 路径 | 定位 |
+|---|---|
+| `plugin.json` | 厂商无关的 Agent Plugins 1.0 主清单 |
+| `skills/` | 12 个通用 Agent Skills |
+| `mcp.json` | 3 个通用 stdio MCP 服务定义 |
+| `scripts/print-mcp-config.mjs` | 为通用 MCP、Claude、Cursor、VS Code 生成本机配置 |
+| `scripts/call-tool.mjs` | 没有 MCP 客户端时，通过命令行列出和调用工具 |
+| `plugins/bio-research-forge/` | MCP 实现、R 绘图脚本、测试以及自包含的兼容包 |
+| `.agents/plugins/marketplace.json` | **可选的 Codex 安装适配器**，不是通用核心入口 |
+| `.github/workflows/verify.yml` | GitHub Actions 自动验证 |
+| `LICENSE` | GNU AGPL-3.0-or-later |
+
+`.agents/plugins/marketplace.json` 被保留，只是为了让 Codex 用户可以一键安装。其他 Agent 不读取它，也不依赖它；真正跨 Agent 的入口是根目录的 `plugin.json`、`skills/` 和 `mcp.json`。
+
+## 三种通用使用方式
+
+### 方式一：Agent Plugins 1.0
+
+支持 Agent Plugins 1.0 的客户端可以从仓库根目录发现：
+
+- `plugin.json`：插件身份、版本、许可证和仓库信息；
+- `skills/`：实验设计、组学、RNA 出图、统计、写作、Review 等技能；
+- `mcp.json`：公共数据库、RNA 出图和本地生命科学工具服务。
+
+这是首选的跨工具分发方式。
+
+### 方式二：任何支持 MCP stdio 的 Agent
+
+克隆仓库后运行：
+
+```powershell
+node scripts/print-mcp-config.mjs --client generic
+```
+
+脚本会输出包含三个 MCP 服务的 JSON，并自动填写当前仓库的绝对路径。把输出复制到 Agent 客户端的 MCP 配置即可。
+
+客户端专用输出：
+
+```powershell
+node scripts/print-mcp-config.mjs --client claude
+node scripts/print-mcp-config.mjs --client cursor
+node scripts/print-mcp-config.mjs --client vscode
+```
+
+### 方式三：没有 MCP、但可以运行命令的 Agent
+
+列出服务器：
+
+```powershell
+node scripts/call-tool.mjs list-servers
+```
+
+查看一个服务器提供的工具：
+
+```powershell
+node scripts/call-tool.mjs list-tools public-bio-api
+```
+
+调用具体工具：
+
+```powershell
+node scripts/call-tool.mjs call public-bio-api bio_api_catalog "{}"
+```
+
+这样 Agent 不需要实现 MCP 客户端，也能通过 Shell 读取结构化 JSON 结果。
+
+## 能力范围
+
+插件包括：
 
 1. 公共生物数据库查询；
-2. RNA-seq 常用结果图；
-3. PyMOL、SnapGene、Cytoscape、Fiji 的选择性本地桥接；
-4. 实验设计、组学、统计、计算环境、论文写作、科研作图、可复现性和独立审查。
+2. RNA-seq 火山图、PCA、热图、表达箱线图和富集气泡图；
+3. PyMOL 安全渲染；
+4. SnapGene、Cytoscape、Fiji 的受限本地打开；
+5. 实验设计、组学、统计、计算环境、论文写作、科研作图、可复现性和独立审查。
 
-## 本地安装
+详细的输入格式、证据边界和 Review 规则见[插件中文手册](plugins/bio-research-forge/README.zh-CN.md)，各客户端配置见[跨 Agent 接入指南](docs/AGENT-INTEGRATION.zh-CN.md)。
 
-克隆仓库后，在仓库根目录执行：
+## 可选的 Codex 安装
+
+只有使用 Codex 时才需要下面两条命令：
 
 ```powershell
 codex plugin marketplace add "<仓库根目录>"
 codex plugin add bio-research-forge@bio-research-forge
 ```
 
-安装后新建一个 Codex 任务，使技能和 MCP 工具进入新任务的工具目录。
+Claude、Cursor、VS Code、OpenAI Agents SDK 或其他 MCP Agent 不需要执行这些命令。
 
 ## 验证
 
 ```powershell
-cd plugins/bio-research-forge
 npm test
 npm run test:render
 npm run test:live
 ```
 
-- `npm test`：MCP 协议、技能结构和隐私边界；
-- `npm run test:render`：5 种 RNA 图和 PyMOL PNG 真实渲染；
+- `npm test`：Agent Plugins 1.0 结构、配置生成器、CLI 桥、MCP 协议、技能结构和隐私边界；
+- `npm run test:render`：5 种 RNA 图和 PyMOL PNG 的真实渲染；
 - `npm run test:live`：公共数据库接口连通性。
 
 ## 公开范围
 
-本仓库不包含任何个人实验数据、私有基因组或转录组数据库、辣椒专用数据门户、访问凭据、PPT、毕业论文或稿件原文。用户在任务中明确选择的文件可以在本机临时处理，但不会被写入插件源码或上传到公共 API。
+本仓库不包含个人实验数据、私有基因组或转录组数据库、辣椒专用数据门户、访问凭据、PPT、毕业论文或稿件原文。用户明确选择的文件只在本机处理，不会被写入插件源码或上传到公共 API。
 
-第三方项目和软件的来源说明见[ATTRIBUTION.md](plugins/bio-research-forge/ATTRIBUTION.md)。
+第三方项目和软件的来源说明见 [ATTRIBUTION.md](plugins/bio-research-forge/ATTRIBUTION.md)。

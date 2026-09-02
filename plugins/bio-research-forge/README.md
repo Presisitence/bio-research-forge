@@ -2,7 +2,7 @@
 
 [中文详细说明](README.zh-CN.md) | English
 
-Bio Research Forge is a Codex plugin for evidence-first life-science research. It combines research design, omics, quantitative analysis, public biological databases, local RNA plotting, selective molecular tools, manuscript argument design, publication figures, reproducibility, and independent review.
+Bio Research Forge is a vendor-neutral Agent Plugins 1.0 and MCP package for evidence-first life-science research. This directory is also self-contained for Codex compatibility, but the tools and skills are not tied to Codex or one model provider.
 
 ## What is included
 
@@ -45,7 +45,7 @@ The local biology-tool MCP detects PyMOL, SnapGene, Cytoscape, and Fiji at runti
 
 ## Local development
 
-Requirements: Codex and Node.js 18 or newer.
+Requirements: an Agent Plugins 1.0 client, an MCP stdio client, or a shell-capable agent; plus Node.js 18 or newer. Codex is optional.
 
 ```powershell
 node tests/protocol-smoke.mjs
@@ -58,7 +58,7 @@ node tests/skill-structure.mjs
 node tests/live-api-smoke.mjs
 ```
 
-To install this repository marketplace in Codex:
+Optional Codex installation:
 
 ```powershell
 codex plugin marketplace add "<repository-root>"

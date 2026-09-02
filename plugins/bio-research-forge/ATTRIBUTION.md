@@ -6,7 +6,7 @@
 - Audited revision: `5f909a5b6370c05046b0b0fd527bbf2ce6de1189`
 - License: GNU Affero General Public License v3.0 or later
 - Material used: high-level role boundaries and research-workbench discipline from the public `agents/` roster and bundled reproducibility skill; provenance, verification, and review concepts described in the public documentation.
-- Treatment here: rewritten and reorganized for Codex skills; no DAWN desktop runtime, UI, dependency tree, or bundled application code is included.
+- Treatment here: rewritten and reorganized as vendor-neutral Agent Skills; no DAWN desktop runtime, UI, dependency tree, or bundled application code is included.
 
 The AGPL license in this repository applies to the resulting plugin distribution. DAWN Science remains copyright its contributors.
 

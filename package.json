@@ -1,0 +1,26 @@
+{
+  "name": "bio-research-forge-agent-package",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vendor-neutral Agent Plugins 1.0 and MCP distribution for Bio Research Forge.",
+  "license": "AGPL-3.0-or-later",
+  "repository": "https://github.com/Presisitence/bio-research-forge.git",
+  "bin": {
+    "bio-research-forge-config": "./scripts/print-mcp-config.mjs",
+    "bio-research-forge-call": "./scripts/call-tool.mjs",
+    "bio-public-api-mcp": "./plugins/bio-research-forge/mcp/public-bio-api.mjs",
+    "bio-rna-figure-mcp": "./plugins/bio-research-forge/mcp/rna-figure.mjs",
+    "bio-local-tools-mcp": "./plugins/bio-research-forge/mcp/local-bio-tools.mjs"
+  },
+  "scripts": {
+    "test": "node tests/portable-package.mjs && npm --prefix plugins/bio-research-forge test",
+    "test:render": "npm --prefix plugins/bio-research-forge run test:render",
+    "test:live": "npm --prefix plugins/bio-research-forge run test:live",
+    "config": "node scripts/print-mcp-config.mjs",
+    "tools:public": "node scripts/call-tool.mjs list-tools public-bio-api"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

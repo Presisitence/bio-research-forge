@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "bio-research-forge",
+  "version": "0.1.0",
+  "description": "Vendor-neutral life-science Agent Plugin with portable skills, public bio APIs, local RNA figures, safe molecular tools, and independent review.",
+  "author": {
+    "name": "Bio Research Forge contributors",
+    "url": "https://github.com/Presisitence/bio-research-forge"
+  },
+  "homepage": "https://github.com/Presisitence/bio-research-forge",
+  "repository": "https://github.com/Presisitence/bio-research-forge.git",
+  "license": "AGPL-3.0-or-later",
+  "keywords": [
+    "agent-plugin",
+    "mcp",
+    "life-science",
+    "bioinformatics",
+    "scientific-writing",
+    "peer-review"
+  ]
+}

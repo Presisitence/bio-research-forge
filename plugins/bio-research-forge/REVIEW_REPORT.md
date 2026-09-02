@@ -4,7 +4,7 @@ Date: 2026-09-02
 
 ## Scope
 
-Reviewed the plugin manifest, marketplace entry, twelve skill packages, three MCP servers, privacy boundary, attribution, tests, local installation, and installed cache.
+Reviewed the vendor-neutral Agent Plugins 1.0 manifests, optional Codex marketplace adapter, twelve portable skill packages, three MCP servers, command-line bridge, privacy boundary, attribution, tests, local installation, and installed cache.
 
 This report was produced in the same implementation task and is therefore a maintainer verification, not a blinded independent review. Objective validators and live endpoint tests provide the main evidence.
 
@@ -12,6 +12,8 @@ This report was produced in the same implementation task and is therefore a main
 
 | Requirement | Evidence | Status |
 |---|---|---|
+| Vendor-neutral package | Root `plugin.json` and `mcp.json` passed the official Agent Plugins 1.0 JSON Schemas | verified |
+| Cross-agent access | Generic, Claude, Cursor, and VS Code MCP configuration generation passed; the shell bridge initialized MCP and returned a real tool result | verified by execution |
 | Codex plugin structure | Official plugin validator passed | verified |
 | Skill structure | Official skill validator passed for all twelve skills | verified |
 | MCP protocol | Protocol smoke tests passed for the public API, RNA figure, and local-tool servers | verified |
@@ -29,7 +31,8 @@ This report was produced in the same implementation task and is therefore a main
 
 ## Known limits
 
-- A newly installed skill/MCP becomes available to the model in a new Codex task; the active task does not hot-reload its own tool catalog.
+- Agent Plugins 1.0 and local MCP support vary by client version. A client with neither MCP nor shell execution can read the skills but cannot execute the bundled tools.
+- A newly installed skill/MCP becomes available to Codex in a new task; the active task does not hot-reload its own tool catalog.
 - The SGN connector is intentionally limited to a verified unauthenticated generic metadata endpoint. It does not scrape the site or expose pepper-specific operations.
 - Public APIs can change availability, schema, terms, or rate limits. The live smoke test should run before release.
 - The conversation-preview rule controls plugin behavior but does not modify Codex application UI code.
@@ -40,4 +43,4 @@ This report was produced in the same implementation task and is therefore a main
 
 `PASS`
 
-The repository is suitable for local use and for publication after the maintainer chooses a GitHub repository name and pushes it. Re-run CI and inspect the first public diff before publishing a release.
+The repository is suitable for cross-agent local use and public distribution. The optional Codex packaging is only one adapter over the same portable skills and MCP services.
