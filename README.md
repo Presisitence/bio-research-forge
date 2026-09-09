@@ -54,6 +54,10 @@ See the [detailed cross-agent integration guide](docs/AGENT-INTEGRATION.md).
 - safe PyMOL rendering and explicit opening of compatible files in SnapGene, Cytoscape, or Fiji;
 - research design, omics, statistics, secure compute routing, manuscript argument, figure delivery, reproducibility, and independent review.
 
+## Companion figure library (optional)
+
+For a local scientific figure gallery beyond this plugin's RNA volcano / PCA / heatmap tools, see the optional companion [Scientific Figure Library](https://github.com/xuzhougeng/ScientificFigureLibrary). It is **not bundled** here—install it separately (Node.js 22+; see that repo's QUICKSTART). Bio Research Forge keeps its own RNA figure pipeline; SFL is a separate local gallery. See [ATTRIBUTION.md](plugins/bio-research-forge/ATTRIBUTION.md).
+
 ## Optional Codex adapter
 
 Codex users can additionally install the repository marketplace:
