@@ -23,3 +23,9 @@ A user-provided presentation and a local corpus of graduate theses were used onl
 The plugin calls third-party public APIs but does not redistribute their databases. Users remain responsible for each provider's current terms, attribution requirements, rate limits, and data licenses. Source URLs are returned with every query and listed in the public database skill.
 
 PyMOL, SnapGene, Cytoscape, Fiji/ImageJ, R, and their packages are optional third-party installations and are not redistributed. Their names identify interoperable software only. The plugin detects and invokes an existing installation under the user's license; it includes no code or assets from those products.
+
+## Companion: Scientific Figure Library (optional)
+
+- Project: [Scientific Figure Library](https://github.com/xuzhougeng/ScientificFigureLibrary)
+- License: MIT
+- Treatment here: **not bundled**. Install separately if you want a local scientific figure gallery. This plugin does not ship SFL code or assets; RNA figures remain provided by bio-research-forge itself.
