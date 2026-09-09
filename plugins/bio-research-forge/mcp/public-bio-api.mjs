@@ -89,6 +89,13 @@ const SOURCES = {
   },
 };
 
+const ALLOWED_HOSTS = new Set(
+  Object.values(SOURCES).map((source) => new URL(source.base).hostname.toLowerCase()),
+);
+
+const SECRET_QUERY_PARAM = /^(?:api[_-]?key|token|access[_-]?token|auth(?:entication)?|password|secret|client[_-]?secret)$/i;
+const SECRET_ENV_NAME = /(?:API[_-]?KEY|TOKEN|SECRET|PASSWORD|AUTH)/i;
+
 const TOOLS = [
   {
     name: 'bio_api_catalog',
@@ -144,12 +151,12 @@ function rpcResult(id, result) {
 }
 
 function rpcError(id, code, message, data) {
-  rpcSend({ jsonrpc: '2.0', id, error: { code, message, ...(data === undefined ? {} : { data }) } });
+  rpcSend({ jsonrpc: '2.0', id, error: { code, message: redactSecrets(message), ...(data === undefined ? {} : { data: redactSecrets(data) }) } });
 }
 
 function textResult(value, isError = false) {
   const text = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
-  return { content: [{ type: 'text', text }], ...(isError ? { isError: true } : {}) };
+  return { content: [{ type: 'text', text: redactSecrets(text) }], ...(isError ? { isError: true } : {}) };
 }
 
 function positiveInt(value, fallback, max = 50) {
@@ -168,6 +175,53 @@ function safeToken(value, label, pattern = /^[A-Za-z0-9_.:-]+$/) {
   const text = requiredText(value, label);
   if (!pattern.test(text)) throw new Error(`${label} contains unsupported characters`);
   return text;
+}
+
+function secretValues() {
+  const secrets = new Set();
+  for (const [key, value] of Object.entries(process.env)) {
+    if (!value || typeof value !== 'string') continue;
+    if (!SECRET_ENV_NAME.test(key)) continue;
+    if (value.length < 4) continue;
+    secrets.add(value);
+  }
+  return [...secrets];
+}
+
+function redactSecrets(value) {
+  if (value == null) return value;
+  if (typeof value !== 'string') {
+    try {
+      return JSON.parse(redactSecrets(JSON.stringify(value)));
+    } catch {
+      return redactSecrets(String(value));
+    }
+  }
+  let out = value;
+  for (const secret of secretValues()) {
+    if (!secret) continue;
+    out = out.split(secret).join('[REDACTED]');
+  }
+  out = out.replace(/([?&](?:api[_-]?key|token|access[_-]?token|auth(?:entication)?|password|secret|client[_-]?secret)=)[^&\s"'<>]+/gi, '$1[REDACTED]');
+  return out;
+}
+
+function redactUrl(urlLike) {
+  const url = new URL(String(urlLike));
+  for (const key of [...url.searchParams.keys()]) {
+    if (SECRET_QUERY_PARAM.test(key)) url.searchParams.set(key, 'REDACTED');
+  }
+  return url.toString();
+}
+
+function assertAllowedHost(urlLike) {
+  const url = new URL(String(urlLike));
+  if (url.protocol !== 'https:') {
+    throw new Error(`Blocked non-HTTPS URL host: ${url.hostname}`);
+  }
+  if (!ALLOWED_HOSTS.has(url.hostname.toLowerCase())) {
+    throw new Error(`Blocked non-allowlisted host: ${url.hostname}`);
+  }
 }
 
 function assertPublicScope(args) {
@@ -265,6 +319,7 @@ function urlFor(args) {
   } else {
     throw new Error(`No request builder for ${source}/${operation}`);
   }
+  assertAllowedHost(url);
   return { source, operation, entry, url };
 }
 
@@ -280,26 +335,68 @@ function scrubExcludedSpecies(value) {
   return value;
 }
 
+async function readBodyLimited(response, maxBytes = MAX_RESPONSE_BYTES) {
+  const declared = response.headers.get('content-length');
+  if (declared != null) {
+    const length = Number(declared);
+    if (Number.isFinite(length) && length > maxBytes) {
+      throw new Error(`Response exceeded ${maxBytes} bytes. Narrow the query or lower limit.`);
+    }
+  }
+
+  if (!response.body || typeof response.body.getReader !== 'function') {
+    const text = await response.text();
+    if (Buffer.byteLength(text, 'utf8') > maxBytes) {
+      throw new Error(`Response exceeded ${maxBytes} bytes. Narrow the query or lower limit.`);
+    }
+    return text;
+  }
+
+  const reader = response.body.getReader();
+  const chunks = [];
+  let total = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > maxBytes) {
+        await reader.cancel();
+        throw new Error(`Response exceeded ${maxBytes} bytes. Narrow the query or lower limit.`);
+      }
+      chunks.push(value);
+    }
+  } catch (error) {
+    try { await reader.cancel(); } catch { /* ignore */ }
+    throw error;
+  }
+  return Buffer.concat(chunks.map((chunk) => Buffer.from(chunk))).toString('utf8');
+}
+
 async function fetchJson(url, timeoutMs = DEFAULT_TIMEOUT_MS) {
+  assertAllowedHost(url);
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(url, {
       method: 'GET',
+      redirect: 'error',
       signal: controller.signal,
       headers: {
         accept: 'application/json',
         'user-agent': `${SERVER.name}/${SERVER.version}`,
       },
     });
-    const body = await response.text();
-    if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}: ${body.slice(0, 1000)}`);
-    if (Buffer.byteLength(body, 'utf8') > MAX_RESPONSE_BYTES) {
-      throw new Error(`Response exceeded ${MAX_RESPONSE_BYTES} bytes. Narrow the query or lower limit.`);
+    const body = await readBodyLimited(response);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} ${response.statusText}: ${body.slice(0, 1000)}`);
     }
     let data;
     try { data = JSON.parse(body); } catch { throw new Error(`Expected JSON but received: ${body.slice(0, 500)}`); }
     return { data, headers: Object.fromEntries([...response.headers.entries()].filter(([key]) => /^(content-type|etag|last-modified|x-|link)/i.test(key))) };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(redactSecrets(message));
   } finally {
     clearTimeout(timer);
   }
@@ -321,7 +418,7 @@ async function query(args) {
     label: built.entry.label,
     operation: built.operation,
     retrievedAt: new Date().toISOString(),
-    sourceUrl: built.url.toString(),
+    sourceUrl: redactUrl(built.url),
     documentation: built.entry.docs,
     evidenceNote: built.entry.notes,
     responseHeaders: received.headers,
@@ -362,11 +459,11 @@ async function callTool(name, args) {
   if (name === 'bio_api_catalog') return textResult({ generatedAt: new Date().toISOString(), sources: catalog(args?.category) });
   if (name === 'bio_api_query') {
     try { return textResult(await query(args || {})); }
-    catch (error) { return textResult(error instanceof Error ? error.message : String(error), true); }
+    catch (error) { return textResult(redactSecrets(error instanceof Error ? error.message : String(error)), true); }
   }
   if (name === 'bio_api_health') {
     try { return textResult(await health(args || {})); }
-    catch (error) { return textResult(error instanceof Error ? error.message : String(error), true); }
+    catch (error) { return textResult(redactSecrets(error instanceof Error ? error.message : String(error)), true); }
   }
   return textResult(`Unknown tool: ${name}`, true);
 }
