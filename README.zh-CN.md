@@ -87,6 +87,10 @@ node scripts/call-tool.mjs call public-bio-api bio_api_catalog "{}"
 
 详细的输入格式、证据边界和 Review 规则见[插件中文手册](plugins/bio-research-forge/README.zh-CN.md)，各客户端配置见[跨 Agent 接入指南](docs/AGENT-INTEGRATION.zh-CN.md)。
 
+## 可选配套：Scientific Figure Library
+
+若需要本插件 RNA 出图之外的本地科研图库，可另装可选配套 [Scientific Figure Library](https://github.com/xuzhougeng/ScientificFigureLibrary)。**本仓库不捆绑**该项目，请单独安装（需 Node.js 22+，见其 QUICKSTART）。Bio Research Forge 仍自带 RNA 图流水线；SFL 是独立的本地图库。来源说明见 [ATTRIBUTION.md](plugins/bio-research-forge/ATTRIBUTION.md)。
+
 ## 可选的 Codex 安装
 
 只有使用 Codex 时才需要下面两条命令：
